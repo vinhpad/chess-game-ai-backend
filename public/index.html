@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Chess</title>
+        <link rel="stylesheet" href="style.css" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <script src="script.js" defer type="module"></script>
+        <script src="/socket.io/socket.io.js" type="text/javascript"></script>
+
+        <script
+            type="module"
+            src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.esm.js"
+        ></script>
+        <script
+            nomodule=""
+            src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.js"
+        ></script>
+    </head>
+
+    <body>
+        <header>
+            <a href="/">PLAY</a>
+
+            <div class="ping-wrapper">
+                <div class="latency" title="Time it takes for a move to reach the server">
+                    <span class="ping-text">Ping</span>
+                    <span class="ping-value">100 ms</span>
+                </div>
+                <div class="server" title="Time to process a move on the server">
+                    <span class="server-text">Server</span>
+                    <span class="server-value">2 ms</span>
+                </div>
+            </div>
+            <div class="info-wrapper">
+                <div class="players" title="Players connected">
+                    <span class="players-text">Connected</span>
+                    <span class="players-value">1</span>
+                </div>
+                <div class="playing" title="Players actually playing a game">
+                    <span class="playing-text">Playing</span>
+                    <span class="playing-value">0</span>
+                </div>
+            </div>
+
+            <a href="/login" class="sign-in">SIGN IN</a>
+            <button class="sign-out hidden"></button>
+            <a href="/preferences" class="preferences"><ion-icon name="settings"></ion-icon></a>
+        </header>
+        <div class="play">
+            <div class="content">
+                <h2>Play Online</h2>
+                <div class="online">
+                    <button
+                        class="find-room"
+                        title="Find someone to play with that is also finding a game"
+                    >
+                        Find Game
+                    </button>
+                    <button
+                        class="create-room"
+                        title="Create a custom game to play with your friends"
+                    >
+                        Create Game
+                    </button>
+                    <button class="join-room" title="Join a game that someone has created">
+                        Join Game
+                    </button>
+                </div>
+                <h2>Play Offline</h2>
+                <div class="gamemode">
+                    <button data-mode="playerVsPlayer" class="toggle" title="Play against yourself">
+                        Over the board
+                    </button>
+                    <button
+                        data-mode="playerVsComputer"
+                        class="toggle"
+                        title="Play against Stockfish"
+                    >
+                        Play with the computer
+                    </button>
+                    <button
+                        data-mode="computerVsComputer"
+                        class="toggle"
+                        title="Watch Stockfish playing against itself"
+                    >
+                        Computer vs. Computer
+                    </button>
+                </div>
+            </div>
+        </div>
+        <template id="join-template">
+            <div class="join-game">
+                <div class="inner">
+                    <h2>Join Game</h2>
+                    <div class="game-list">
+                        <table>
+                            <tr>
+                                <th>Player</th>
+                                <th>Elo</th>
+                                <th>Time</th>
+                                <th></th>
+                            </tr>
+                        </table>
+                    </div>
+                    <button class="cancel-btn">X</button>
+                </div>
+            </div>
+        </template>
+        <template id="skill-level-template">
+            <div class="level-selector">
+                <div class="inner">
+                    <button class="close-btn">X</button>
+                    <h2>Stockfish Settings</h2>
+                    <label class="skill">
+                        <span>Skill level: 10</span>
+                        <input class="range" type="range" step="1" min="0" max="20" value="10" />
+                    </label>
+                    <label class="move-time">
+                        <span>Thinking time: 200 ms</span>
+                        <input
+                            class="range"
+                            type="range"
+                            min="0"
+                            max="5000"
+                            step="10"
+                            value="200"
+                        />
+                    </label>
+                    <div class="color-selection hidden">
+                        <button class="color-btn black"></button>
+                        <button class="color-btn random"></button>
+                        <button class="color-btn white"></button>
+                    </div>
+                    <button class="start-btn hidden">START</button>
+                </div>
+            </div>
+        </template>
+        <template id="find-game-template">
+            <div class="finding-game">
+                <div class="inner">
+                    <h2>Finding Game</h2>
+                    <div class="spinner white"></div>
+                    <button class="close-btn">X</button>
+                </div>
+            </div>
+        </template>
+    </body>
+</html>

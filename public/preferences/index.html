@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Preferences - Chess</title>
+        <link rel="stylesheet" href="../style.css" />
+        <link rel="stylesheet" href="style.css" />
+        <script src="script.js" defer type="module"></script>
+        <script src="../socket.io/socket.io.js" type="text/javascript"></script>
+
+        <script
+            type="module"
+            src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.esm.js"
+        ></script>
+        <script
+            nomodule=""
+            src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.js"
+        ></script>
+    </head>
+    <body>
+        <header>
+            <div class="ping-wrapper">
+                <div class="latency">
+                    <span class="ping-text">Ping</span>
+                    <span class="ping-value">100 ms</span>
+                </div>
+                <div class="server">
+                    <span class="server-text">Server</span>
+                    <span class="server-value">2 ms</span>
+                </div>
+            </div>
+            <a href="../">PLAY</a>
+            <a href="../login" class="sign-in">SIGN IN</a>
+            <button class="sign-out hidden"></button>
+            <a href="/" class="preferences"><ion-icon name="settings"></ion-icon></a>
+        </header>
+        <div class="main">
+            <div class="pref animation-speed">
+                <p>Animation speed</p>
+                <div class="btns">
+                    <button class="toggle" data-value="0">None</button>
+                    <button class="toggle" data-value="1">Fast</button>
+                    <button class="toggle" data-value="2">Normal</button>
+                    <button class="toggle" data-value="3">Slow</button>
+                </div>
+            </div>
+            <div class="pref moves-indicator">
+                <p>Moves indicator</p>
+                <div class="btns">
+                    <button class="toggle" data-value="0">Hidden</button>
+                    <button class="toggle" data-value="1">Shown</button>
+                </div>
+            </div>
+            <div class="pref board-theme">
+                <p>Board theme</p>
+                <div class="btns">
+                    <button class="toggle" data-value="brown"><span>a</span></button>
+                    <button class="toggle" data-value="blue"><span>a</span></button>
+                    <button class="toggle" data-value="green"><span>a</span></button>
+                    <button class="toggle" data-value="purple"><span>a</span></button>
+                    <button class="toggle" data-value="ic"><span>a</span></button>
+                    <button class="toggle" data-value="blue2"><span>a</span></button>
+                    <button class="toggle" data-value="blue3"><span>a</span></button>
+                    <button class="toggle" data-value="blue-marble"><span>a</span></button>
+                    <button class="toggle" data-value="canvas2"><span>a</span></button>
+                    <button class="toggle" data-value="green-plastic"><span>a</span></button>
+                    <button class="toggle" data-value="grey"><span>a</span></button>
+                    <button class="toggle" data-value="horsey"><span>a</span></button>
+                    <button class="toggle" data-value="leather"><span>a</span></button>
+                    <button class="toggle" data-value="maple"><span>a</span></button>
+                    <button class="toggle" data-value="maple2"><span>a</span></button>
+                    <button class="toggle" data-value="marble"><span>a</span></button>
+                    <button class="toggle" data-value="metal"><span>a</span></button>
+                    <button class="toggle" data-value="ncf-board"><span>a</span></button>
+                    <button class="toggle" data-value="newspaper"><span>a</span></button>
+                    <button class="toggle" data-value="olive"><span>a</span></button>
+                    <button class="toggle" data-value="pink-pyramid"><span>a</span></button>
+                    <button class="toggle" data-value="purple-diag"><span>a</span></button>
+                    <button class="toggle" data-value="wood"><span>a</span></button>
+                    <button class="toggle" data-value="wood2"><span>a</span></button>
+                    <button class="toggle" data-value="wood3"><span>a</span></button>
+                    <button class="toggle" data-value="wood4"><span>a</span></button>
+                </div>
+            </div>
+            <div class="pref skin">
+                <p>Pieces skin</p>
+                <div class="btns">
+                    <button class="toggle" data-value="0">
+                        <img src="../assets/pieces/skin0/wN.svg" alt="skin" />
+                    </button>
+                    <button class="toggle" data-value="1">
+                        <img src="../assets/pieces/skin1/wN.svg" alt="skin" />
+                    </button>
+                    <button class="toggle" data-value="2">
+                        <img src="../assets/pieces/skin2/wN.svg" alt="skin" />
+                    </button>
+                    <button class="toggle" data-value="3">
+                        <img src="../assets/pieces/skin3/wN.svg" alt="skin" />
+                    </button>
+                    <button class="toggle" data-value="4">
+                        <img src="../assets/pieces/skin4/wN.svg" alt="skin" />
+                    </button>
+                    <button class="toggle" data-value="5">
+                        <img src="../assets/pieces/skin5/wN.svg" alt="skin" />
+                    </button>
+                    <button class="toggle" data-value="6">
+                        <img src="../assets/pieces/skin6/wN.svg" alt="skin" />
+                    </button>
+                    <button class="toggle" data-value="7">
+                        <img src="../assets/pieces/skin7/wN.svg" alt="skin" />
+                    </button>
+                    <button class="toggle" data-value="8">
+                        <img src="../assets/pieces/skin8/wN.svg" alt="skin" />
+                    </button>
+                    <button class="toggle" data-value="9">
+                        <img src="../assets/pieces/skin9/wN.svg" alt="skin" />
+                    </button>
+                    <button class="toggle" data-value="10">
+                        <img src="../assets/pieces/skin10/wN.svg" alt="skin" />
+                    </button>
+                    <button class="toggle" data-value="11">
+                        <img src="../assets/pieces/skin11/wN.svg" alt="skin" />
+                    </button>
+                    <button class="toggle" data-value="12">
+                        <img src="../assets/pieces/skin12/wN.svg" alt="skin" />
+                    </button>
+                    <button class="toggle" data-value="13">
+                        <img src="../assets/pieces/skin13/wN.svg" alt="skin" />
+                    </button>
+                    <button class="toggle" data-value="14">
+                        <img src="../assets/pieces/skin14/wN.svg" alt="skin" />
+                    </button>
+                    <button class="toggle" data-value="15">
+                        <img src="../assets/pieces/skin15/wN.svg" alt="skin" />
+                    </button>
+                    <button class="toggle" data-value="16">
+                        <img src="../assets/pieces/skin16/wN.svg" alt="skin" />
+                    </button>
+                    <button class="toggle" data-value="17">
+                        <img src="../assets/pieces/skin17/wN.svg" alt="skin" />
+                    </button>
+                    <button class="toggle" data-value="18">
+                        <img src="../assets/pieces/skin18/wN.svg" alt="skin" />
+                    </button>
+                    <button class="toggle" data-value="19">
+                        <img src="../assets/pieces/skin19/wN.svg" alt="skin" />
+                    </button>
+                    <button class="toggle" data-value="20">
+                        <img src="../assets/pieces/skin20/wN.svg" alt="skin" />
+                    </button>
+                    <button class="toggle" data-value="21">
+                        <img src="../assets/pieces/skin21/wN.svg" alt="skin" />
+                    </button>
+                </div>
+            </div>
+            <button class="save">SAVE</button>
+        </div>
+    </body>
+</html>
