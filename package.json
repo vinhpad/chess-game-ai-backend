@@ -1,26 +1,24 @@
 {
-    "name": "server",
+    "name": "chess-game-ai",
     "version": "1.0.0",
     "description": "",
-    "main": "server.js",
+    "main": "index.js",
     "type": "module",
     "scripts": {
-        "build": "docker build . -t chess",
-        "run": "docker compose up -d",
-        "stop": "docker compose down",
-        "deploy": "npm run stop && npm run build && npm run run",
-        "start": "node server.js",
+        "start": "node index.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@prisma/client": "^5.5.2",
         "crypto": "^1.0.1",
         "dotenv": "^16.0.3",
         "express": "^4.17.2",
         "mysql2": "^3.3.2",
         "nodemailer": "^6.7.2",
+        "prisma": "^5.5.2",
         "socket.io": "^4.6.1",
         "stockfish": "^15.0.0"
     }
