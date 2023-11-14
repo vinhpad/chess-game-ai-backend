@@ -1,18 +1,20 @@
-import { moveString, moveNumber } from './public/modules/constants.js'
-import Timer, { msToSec } from './public/modules/timer.js'
-import { loadEngine } from './loadEngine.js'
-//import { oldServerDelay, oldConnections, olfPlaying, serverDelay, playing} from './cache/value.js'
+import { moveString, moveNumber } from '../public/modules/constants.js'
+import Timer, { msToSec } from '../public/modules/timer.js'
+import { loadEngine } from '../loadEngine.js'
+import randStr from '../helper/randomString.js'
+
 var oldServerDelay = 2
 var oldConnections = 0
 var olfPlaying = 0
 var serverDelay = 2
 var playing = 0
 const games = {}
+const queue = {}
+
 function oppositeColor(color) {
     return color === 'white' ? 'black' : 'white'
 }
 
-const queue = {}
 function tryToFindOpponent(socketId) {
     const queueKeys = Object.keys(queue)
     if (queueKeys.length <= 1) return
