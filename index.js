@@ -3,8 +3,6 @@ import { Server } from 'socket.io'
 import { createServer } from 'http'
 import path from 'path'
 import { initialize } from './socket.js'
-import { oldServerDelay, oldConnections, olfPlaying, serverDelay, playing} from './cache/value.js' 
-
 const __dirname = path.resolve()
 const app = express()
 const httpServer = createServer(app)
