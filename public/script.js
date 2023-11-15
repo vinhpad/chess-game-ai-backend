@@ -6,7 +6,7 @@ import { gamemode, color } from './modules/constants.js'
 
 import { createBoard } from './modules/board.js'
 
-import { ping, getColorForPing } from './modules/ping.js'
+import { ping } from './modules/ping.js'
 
 import { serverDelay } from './modules/serverDelay.js'
 

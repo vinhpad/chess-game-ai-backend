@@ -8,12 +8,12 @@ datasource db {
 }
 
 model games {
-  id                              BigInt   @id @default(autoincrement())
+  id                              Int      @id @default(autoincrement())
   started                         DateTime @db.DateTime(0)
   ended                           DateTime @db.DateTime(0)
-  white_player                    BigInt?
-  black_player                    BigInt?
-  winner                          BigInt?
+  white_player                    Int
+  black_player                    Int
+  winner                          Int
   winner_color                    String   @db.VarChar(5)
   final_position                  String   @db.VarChar(100)
   users_games_black_playerTousers users?   @relation("games_black_playerTousers", fields: [black_player], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_black_player")
@@ -27,14 +27,14 @@ model games {
 }
 
 model users {
-  id                              BigInt    @id @default(autoincrement()) 
-  username                        String?   @unique(map: "username") @db.VarChar(255)
-  email                           String?   @unique(map: "email") @db.VarChar(255)
+  id                              Int       @id @default(autoincrement()) 
+  username                        String    @unique @db.VarChar(255)
+  email                           String    @unique @db.VarChar(255)
   password                        String?   @db.VarChar(255)
-  token                           String?   @db.VarChar(255)
+  token                           String    @unique @db.VarChar(255)
   elo                             Int       @default(800)
-  matches                         BigInt    @default(0)
-  wins                            BigInt    @default(0)
+  matches                         Int       @default(0)
+  wins                            Int       @default(0)
   verified                        Boolean   @default(false)
   games_games_black_playerTousers games[]   @relation("games_black_playerTousers")
   games_games_white_playerTousers games[]   @relation("games_white_playerTousers")

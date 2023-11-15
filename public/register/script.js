@@ -10,6 +10,7 @@ let wait = false
 
 if (localStorage.getItem('email')) {
     createVerificationDiv(localStorage.getItem('email'))
+    localStorage.removeItem('email')
 }
 
 form.onsubmit = async (e) => {
@@ -37,8 +38,7 @@ form.onsubmit = async (e) => {
 
     const response = await fetch(`${location.protocol}//${location.host}/account/register`, options)
     const data = await response.json()
-
-    if (data.success) {
+    if (data.success === true) {
         // location.href = '../login'
         wait = false
         localStorage.setItem('email', email)

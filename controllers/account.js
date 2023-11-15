@@ -1,8 +1,8 @@
 import {validadeUsername, validadePassword, validadeEmail } from '../helper/util.js'
-import {createUser, findUserByUsername, findUserByToken } from '../service/account.js'
+import {createUser, findUserByUsername } from '../service/account.js'
 import {encrypt} from '../helper/encript.js'
 import {randInt} from '../helper/randomString.js'
-
+import { sendEmail } from '../helper/email.js'
 const verifications = {}
 const verificationCodeLength = 10
 
@@ -13,16 +13,23 @@ export const login = async (request, response) => {
         password = password.trim()
         if (username.length === 0 || password.length == 0) 
             throw new Error('[Username] or [Password] is invalid!')   
+    
         const passwordHash = encrypt(password)
         const user = await findUserByUsername(username)
-        if(!user) 
-            throw new Error('[Username] dose not exist!')
-        if(user.password !== passwordHash) 
-            throw new Error('[Password] incorrect!')
-        response.json(user)
+        if(!user || user.password !== passwordHash || !user.verified) 
+            throw new Error('Error authentication!!!')   
+        
+        return response.json({
+            success: true,
+            token: user.token,
+            username: user.username        
+        })
     } catch (error) {
-        console.log(`[ERROR]: ${error}`)
-        response.status(error.status).json(error)
+        console.log(`[ERROR]: ${error.message}`)
+        response.status(400).json({
+            success : false,
+            error : error.message
+        })
     }
 }
 
@@ -33,12 +40,14 @@ export const verify = async (request, response) => {
         code = code.trim()
         if (code.length !== verificationCodeLength || verifications[email] !== code)
             throw new Error('[Token] is invalid!')
-        const data = await verifyUserByEmail(email)
         delete verification[email]
-        response.json(data)
+        response.json({success : true})
     } catch (error) {
         console.log(`[ERROR]: ${error}`)
-        response.status(error.status).json(error)
+        response.status(400).json({
+            success : false,
+            message : error.message
+        })
     }
 }
 
@@ -49,13 +58,23 @@ export const register = async (request, response) => {
         || !validadeEmail(email) || !validadePassword(password) || !validadeUsername(username)
         || password !== confirmPassword)
             throw new Error('[Username] or [Password] or [Email] is invalid!')
-        console.log( `${username} ${password} ${confirmPassword} ${email}`)
         const passwordHash = encrypt(password)
         const data = await createUser(username, passwordHash, email)
-        response.json(data) 
+        verifications[email] = randInt(verificationCodeLength)
+        sendEmail(
+            email, 
+            'Chess verification',
+            'Your verification code is ' + verifications[email]
+            )
+        if (!data) 
+            throw new Error('Error authetication!!!')
+        return response.json({success : true}) 
     } catch (error) {
         console.log(`[ERROR]: ${error}`)
-        response.status(error.status).json(error)
+        return response.status(400).json({
+            success : false,
+            error : error.message
+        })
     }
 }
 
@@ -65,10 +84,11 @@ export const resend = async (request, response) => {
         email = email.trim()
         if (verifications[email]) {
             verifications[email] = '' + randInt(verificationCodeLength)
+            console.log(verifications[email])
             sendEmail(email, 'Chess verification', 'Your verification code is ' + verifications[email])
         }
     } catch (error) {
         console.log(`[ERROR]: ${error}`)
-        response.status(error.status).json(error)
+        response.status(400).json(error)
     }
 }

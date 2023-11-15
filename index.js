@@ -4,6 +4,7 @@ import { createServer } from 'http'
 import path from 'path'
 import { initialize } from './core/socket.js'
 import accountRouter from './routers/account.js'
+
 const __dirname = path.resolve()
 const app = express()
 const httpServer = createServer(app)

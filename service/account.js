@@ -3,14 +3,14 @@ import {randInt} from '../helper/randomString.js'
 
 export async function createUser(username, passwordHash, email) {
     try {
-        const user = await UserEntity.create({
-            data: {
-                username : username,
-                password : passwordHash,
-                email : email,
-                token : randInt(50)
-            }
-        })
+        const newUser = {
+            username : username,
+            password : passwordHash,
+            email : email,
+            token : randInt(50)
+        }
+        console.log(newUser)
+        const user = await UserEntity.create({data: newUser})
         return user    
     } catch (error) {
         console.log(`[ERROR]: ${error}`)
@@ -20,7 +20,7 @@ export async function createUser(username, passwordHash, email) {
 
 export const findUserByUsername = async (username) => {
     const data = await UserEntity.findUnique({
-        data : {
+        where : {
             username : username
         }
     })
@@ -29,7 +29,7 @@ export const findUserByUsername = async (username) => {
 
 export const findUserByToken = async (token) => {
     const data = await UserEntity.findUnique({
-        data : {
+        where : {
             token : token
         }
     })

@@ -1,11 +1,5 @@
 import { PrismaClient } from '@prisma/client'
 
-const prisma = new PrismaClient()
-const UserEntity = prisma.users
-const GameEntity = prisma.games
-
-export {
-    prisma,
-    UserEntity,
-    GameEntity
-}
+export const prisma = new PrismaClient()
+export const UserEntity = prisma.users
+export const GameEntity = prisma.games
