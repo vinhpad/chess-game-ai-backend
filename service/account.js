@@ -28,10 +28,60 @@ export const findUserByUsername = async (username) => {
 }
 
 export const findUserByToken = async (token) => {
-    const data = await UserEntity.findUnique({
-        where : {
-            token : token
-        }
-    })
-    return data 
+    try {
+        const data = await UserEntity.findUnique({
+            where : {
+                token : token
+            }
+        })
+        return data 
+    } catch (error) {
+        console.log(`[ERROR]: ${error.message}`)
+    }
+}
+
+export async function verifyUser(username) {
+    try {
+        const data = await UserEntity.update({
+            where : {
+                username : username
+            },
+            data : {
+                verified : true
+            }
+        })
+        return data
+    } catch( error ) {
+        console.log(error.message)
+    }
+}
+
+export async function updateElo(token, elo) {
+    try {
+        const data = await UserEntity.update({
+            where : {
+                token : token
+            },
+            data : {
+                elo : elo
+            }
+        })
+        return data
+    } catch( error ) {
+        console.log(`[ERROR]: ${error.message}`)
+    }
+}
+
+export async function getEloFromToken(token) {
+    try {
+        const data = await UserEntity.findUnique({
+            where : {
+                token : token
+            }
+        })
+        return data
+    } catch( error ) {
+        console.log(`[ERROR]: ${error.message}`)
+        return null
+    }
 }

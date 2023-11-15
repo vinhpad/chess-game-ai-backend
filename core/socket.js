@@ -1,7 +1,9 @@
 import { moveString, moveNumber } from '../public/modules/constants.js'
 import Timer, { msToSec } from '../public/modules/timer.js'
 import { loadEngine } from '../loadEngine.js'
+import { findUserByToken, updateElo, getEloFromToken } from '../service/account.js'
 import randStr from '../helper/randomString.js'
+import { createGame } from '../service/game.js'
 
 var oldServerDelay = 2
 var oldConnections = 0
@@ -43,6 +45,7 @@ function tryToFindOpponent(socketId) {
 
 export function initialize(socket, io) {
     console.log(`> socket connected ${socket.id}`)
+
     socket.emit('connections', io.engine.clientsCount)
     socket.emit('playing', playing)
     socket.emit('server-delay', serverDelay ?? 2)
@@ -204,22 +207,15 @@ export function initialize(socket, io) {
             endedDate = new Date()
             state = 2
             if (players[color].token && rated) {
-                mysqlQuery(`update users set elo = ${players[color].info.elo + 10} where token = ?`, [
-                    players[color].token,
-                ])
+                updateElo(players[color].token, players[color].info.elo + 10)
                 if (players[color].socket) players[color].socket?.emit('update-elo', 10)
             }
             if (players[oppositeColor(color)].token && rated) {
-                mysqlQuery(
-                    `update users set elo = ${
-                        players[oppositeColor(color)].info.elo - 10
-                    } where token = ?`,
-                    [players[oppositeColor(color)].token],
-                )
+                updateElo(players[color].token, players[color].info.elo - 10)
                 if (players[oppositeColor(color)].socket)
                     players[oppositeColor(color)].socket?.emit('update-elo', -10)
             }
-            insertInto('games', {
+            createGame({
                 started: startedDate,
                 ended: endedDate,
                 white_player: players.white.id ?? null,
@@ -292,10 +288,10 @@ export function initialize(socket, io) {
         }
     
         async function join(socket, token, color) {
-            const users = await mysqlQuery('select * from users where token = ?', [token])
+            const users = [ await findUserByToken(token) ]
             if (users.length === 0) token = undefined
             const user = users[0] ?? null
-    
+            
             if (state === 2) {
                 socket.emit('join-room', 'error:Game already finished')
                 return

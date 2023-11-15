@@ -1,8 +1,9 @@
 import {validadeUsername, validadePassword, validadeEmail } from '../helper/util.js'
-import {createUser, findUserByUsername } from '../service/account.js'
+import {createUser, findUserByUsername , verifyUser } from '../service/account.js'
 import {encrypt} from '../helper/encript.js'
 import {randInt} from '../helper/randomString.js'
 import { sendEmail } from '../helper/email.js'
+
 const verifications = {}
 const verificationCodeLength = 10
 
@@ -16,6 +17,8 @@ export const login = async (request, response) => {
     
         const passwordHash = encrypt(password)
         const user = await findUserByUsername(username)
+        console.log(user)
+        console.log(passwordHash)
         if(!user || user.password !== passwordHash || !user.verified) 
             throw new Error('Error authentication!!!')   
         
@@ -40,7 +43,8 @@ export const verify = async (request, response) => {
         code = code.trim()
         if (code.length !== verificationCodeLength || verifications[email] !== code)
             throw new Error('[Token] is invalid!')
-        delete verification[email]
+        delete verifications[email]
+        await verifyUser(username)
         response.json({success : true})
     } catch (error) {
         console.log(`[ERROR]: ${error}`)
