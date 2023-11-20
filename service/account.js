@@ -38,13 +38,14 @@ export const findUserByToken = async (token) => {
     } catch (error) {
         console.log(`[ERROR]: ${error.message}`)
     }
+    return null
 }
 
-export async function verifyUser(username) {
+export async function verifyUser( email ) {
     try {
         const data = await UserEntity.update({
             where : {
-                username : username
+                email : email
             },
             data : {
                 verified : true

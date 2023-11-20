@@ -1,15 +1,15 @@
 import { moveString, moveNumber } from '../public/modules/constants.js'
 import Timer, { msToSec } from '../public/modules/timer.js'
 import { loadEngine } from '../loadEngine.js'
-import { findUserByToken, updateElo, getEloFromToken } from '../service/account.js'
+import { findUserByToken, updateElo } from '../service/account.js'
 import randStr from '../helper/randomString.js'
 import { createGame } from '../service/game.js'
 
-var oldServerDelay = 2
-var oldConnections = 0
-var olfPlaying = 0
-var serverDelay = 2
-var playing = 0
+let oldServerDelay = 2
+let oldConnections = 0
+let olfPlaying = 0
+let serverDelay = 2
+let playing = 0
 const games = {}
 const queue = {}
 
@@ -206,15 +206,15 @@ export function initialize(socket, io) {
             console.log(`> Room ${id}: ${color} is victorious`)
             endedDate = new Date()
             state = 2
-            if (players[color].token && rated) {
-                updateElo(players[color].token, players[color].info.elo + 10)
-                if (players[color].socket) players[color].socket?.emit('update-elo', 10)
-            }
-            if (players[oppositeColor(color)].token && rated) {
-                updateElo(players[color].token, players[color].info.elo - 10)
-                if (players[oppositeColor(color)].socket)
-                    players[oppositeColor(color)].socket?.emit('update-elo', -10)
-            }
+            // if (players[color].token && rated && players[color].token.info.elo != null) {
+            //     updateElo(players[color].token, players[color].info.elo + 10)
+            //     if (players[color].socket) players[color].socket?.emit('update-elo', 10)
+            // }
+            // if (players[oppositeColor(color)].token && rated && players[color].info.elo != null) {
+            //     updateElo(players[color].token, players[color].info.elo - 10)
+            //     if (players[oppositeColor(color)].socket)
+            //         players[oppositeColor(color)].socket?.emit('update-elo', -10)
+            // }
             createGame({
                 started: startedDate,
                 ended: endedDate,
@@ -288,9 +288,9 @@ export function initialize(socket, io) {
         }
     
         async function join(socket, token, color) {
-            const users = [ await findUserByToken(token) ]
-            if (users.length === 0) token = undefined
-            const user = users[0] ?? null
+            const user = await findUserByToken(token)
+            if(user === null) 
+                token = undefined
             
             if (state === 2) {
                 socket.emit('join-room', 'error:Game already finished')
@@ -605,3 +605,22 @@ export function initialize(socket, io) {
 
 }
 
+const getEloFromToken = async (token) =>{
+    if (!token) {
+        return {
+            elo: null,
+            username: null,
+        }
+    }
+    const user = await findUserByToken(token)
+    if (user === null) {
+        return {
+            elo: null,
+            username: null,
+        }
+    }
+    return {
+        elo: user.elo,
+        username: user.username,
+    }
+}

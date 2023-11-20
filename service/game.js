@@ -7,6 +7,6 @@ export async function createGame(newGame) {
         })
         return data
     } catch ( error ) {
-        console.log(`[ERROR:] ${error.message}`)
+        console.log(`[ERROR]: ${error.message}`)
     }
 }

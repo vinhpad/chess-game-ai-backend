@@ -1,5 +1,5 @@
 import {validadeUsername, validadePassword, validadeEmail } from '../helper/util.js'
-import {createUser, findUserByUsername , verifyUser } from '../service/account.js'
+import {createUser, findUserByUsername, verifyUser} from '../service/account.js'
 import {encrypt} from '../helper/encript.js'
 import {randInt} from '../helper/randomString.js'
 import { sendEmail } from '../helper/email.js'
@@ -7,7 +7,7 @@ import { sendEmail } from '../helper/email.js'
 const verifications = {}
 const verificationCodeLength = 10
 
-export const login = async (request, response) => {
+export async function login(request, response) {
     try {
         let { username, password } = request.body
         username = username.trim()
@@ -36,7 +36,7 @@ export const login = async (request, response) => {
     }
 }
 
-export const verify = async (request, response) => {
+export async function verify(request, response){
     try {
         let { email, code } = request.body
         email = email.trim()
@@ -44,7 +44,7 @@ export const verify = async (request, response) => {
         if (code.length !== verificationCodeLength || verifications[email] !== code)
             throw new Error('[Token] is invalid!')
         delete verifications[email]
-        await verifyUser(username)
+        await verifyUser(email)
         response.json({success : true})
     } catch (error) {
         console.log(`[ERROR]: ${error}`)
@@ -55,7 +55,7 @@ export const verify = async (request, response) => {
     }
 }
 
-export const register = async (request, response) => {
+export async function register(request, response){
     try {
         let { username, password, confirmPassword, email } = request.body
         if (username.length === 0 || password.length === 0 || email.length === 0
@@ -82,7 +82,7 @@ export const register = async (request, response) => {
     }
 }
 
-export const resend = async (request, response) => {
+export async function resend(request, response) {
     try {
         let { email } = request.body
         email = email.trim()

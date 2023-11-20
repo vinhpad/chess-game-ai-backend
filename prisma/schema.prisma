@@ -11,8 +11,8 @@ model games {
   id                              Int      @id @default(autoincrement())
   started                         DateTime @db.DateTime(0)
   ended                           DateTime @db.DateTime(0)
-  white_player                    Int      
-  black_player                    Int
+  white_player                    Int?      
+  black_player                    Int?
   winner                          Int
   winner_color                    String   @db.VarChar(5)
   final_position                  String   @db.VarChar(100)
